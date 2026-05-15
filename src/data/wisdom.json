@@ -1,0 +1,169 @@
+{
+  "intensityLevels": [
+    { "id": "low", "label": "Low", "icon": "Waves", "color": "text-emerald-500", "desc": "A nagging thought." },
+    { "id": "medium", "label": "Medium", "icon": "Zap", "color": "text-amber-500", "desc": "A strong desire." },
+    { "id": "high", "label": "High", "icon": "Flame", "color": "text-rose-500", "desc": "A physical struggle." },
+    { "id": "strategic", "label": "Logic", "icon": "ShieldAlert", "color": "text-primary", "desc": "Mindset & Strategy." }
+  ],
+  "verses": [
+    {
+      "text": "And whoever fears Allah - He will make for him a way out.",
+      "source": "Surah At-Talaq 65:2",
+      "category": "patience",
+      "tags": ["low", "medium", "strategic"]
+    },
+    {
+      "text": "Every urge is a temporary chemical signal in the brain. It is not a command; it is a suggestion that you can decline.",
+      "source": "Cognitive Science",
+      "category": "logic",
+      "tags": ["strategic", "low"]
+    },
+    {
+      "text": "Indeed, the soul is a persistent enjoiner of evil, except those upon which my Lord has mercy.",
+      "source": "Surah Yusuf 12:53",
+      "category": "self-control",
+      "tags": ["medium", "high"]
+    },
+    {
+      "text": "But as for he who feared the position of his Lord and prevented the soul from unlawful inclination, then indeed, Paradise will be his refuge.",
+      "source": "Surah An-Naziat 79:40-41",
+      "category": "reward",
+      "tags": ["high"]
+    },
+    {
+      "text": "Truly, in the remembrance of Allah do hearts find rest.",
+      "source": "Surah Ar-Ra'd 13:28",
+      "category": "peace",
+      "tags": ["low", "medium", "high"]
+    },
+    {
+      "text": "Allah does not burden a soul beyond that it can bear.",
+      "source": "Surah Al-Baqarah 2:286",
+      "category": "strength",
+      "tags": ["high", "medium"]
+    }
+  ],
+  "recoveryActions": [
+    { "id": 1, "icon": "CloudRain", "text": "Splash cold water on your face (Wudhu).", "tags": ["low", "medium", "high", "strategic"] },
+    { "id": 2, "icon": "Anchor", "text": "5-4-3-2-1: Name 5 things you see, 4 you feel, 3 you hear.", "tags": ["low", "medium", "high", "strategic"] },
+    { "id": 3, "icon": "Moon", "text": "Recite Salawat 10 times slowly.", "tags": ["low"] },
+    { "id": 4, "icon": "Play", "text": "Physical reset: Do 10 pushups or walk for 2 mins.", "tags": ["medium"] },
+    { "id": 5, "icon": "BookOpen", "text": "Read a page from the Quran or a Dua.", "tags": ["medium", "high"] },
+    { "id": 6, "icon": "Flame", "text": "IMMEDIATE: Move to a public room or go outside.", "tags": ["high"] },
+    { "id": 7, "icon": "Heart", "text": "Sincere Sajdah: Ask Allah for specific help in this moment.", "tags": ["high"] },
+    { "id": 8, "icon": "RefreshCw", "text": "Play the 'What happens next?' movie to the end in your mind.", "tags": ["strategic"] },
+    { "id": 9, "icon": "Info", "text": "List 3 reasons why this urge is a liar.", "tags": ["strategic"] },
+    { "id": 10, "icon": "Zap", "text": "Change your physical environment immediately.", "tags": ["strategic"] }
+  ],
+  "hadiths": [
+    {
+      "text": "The most powerful person is the one who can control his own soul.",
+      "source": "Imam Ali (AS)",
+      "tags": ["high"]
+    },
+    {
+      "text": "The struggle against one's own desires is the greatest jihad.",
+      "source": "Prophet Muhammad (SAW)",
+      "tags": ["high", "medium"]
+    },
+    {
+      "text": "Your soul is like a wild beast; if you tie it up, it will stay, but if you let it go, it will devour you.",
+      "source": "Imam Ali (AS)",
+      "tags": ["medium"]
+    },
+    {
+      "text": "Victory over oneself is the greatest of all victories.",
+      "source": "Imam Ali (AS)",
+      "tags": ["low", "medium", "high"]
+    }
+  ],
+  "journalPrompts": [
+    { "text": "What was the specific trigger that led to this urge?", "type": "reflection" },
+    { "text": "How did your body feel during the peak of the urge?", "type": "awareness" },
+    { "text": "What thought helped you the most in this victory?", "type": "strategy" },
+    { "text": "Write a short prayer of gratitude for this strength.", "type": "gratitude" },
+    { "text": "If you could tell your past self one thing before the urge, what would it be?", "type": "wisdom" }
+  ],
+  "lessons": [
+    {
+      "id": 1,
+      "category": "Mindset",
+      "title": "Understanding the Nafs",
+      "description": "The soul (Nafs) is like a wild horse that needs gentle but firm discipline.",
+      "icon": "Brain",
+      "content": "Islam teaches that the Nafs (the carnal soul) has three stages: Al-Nafs al-Amara (the soul that commands evil), Al-Nafs al-Lawwama (the self-reproaching soul that feels guilt), and Al-Nafs al-Mutma'inna (the soul at peace). Your goal is to move from the first stage to the third using patience and consistent training.",
+      "action": "Observe your Nafs today like a detached scientist. What triggers its 'commands'?"
+    },
+    {
+      "id": 2,
+      "category": "Practice",
+      "title": "The Power of Wudu",
+      "description": "Cold water is a physical and spiritual barrier against fire-like desires.",
+      "icon": "ShieldCheck",
+      "content": "Scientifically and spiritually, performing Wudu (ablution) with cold water can instantly lower the body's internal 'heat' and sexual excitement. It resets your state of being and reminds you of your commitment to purity. When you feel a strong urge, perform a fresh Wudu immediately.",
+      "action": "Try performing Wudu even when you aren't about to pray, just for the purpose of cooling an urge."
+    },
+    {
+      "id": 3,
+      "category": "Wisdom",
+      "title": "The Visionary Eye",
+      "description": "Lowering the gaze is not a restriction, but a protection of the heart's peace.",
+      "icon": "BookCheck",
+      "content": "The eyes are the windows to the soul. In Islamic traditions, the first glance is for you, but the second is against you. Every time you consciously 'lower your gaze' from a trigger, you strengthen your inner willpower (Taqwa) and protect your heart from a spiritual 'arrow' of Shaytan.",
+      "action": "Count how many times today you choose NOT to look at something triggering. Each time is a victory."
+    },
+    {
+      "id": 4,
+      "category": "Recovery",
+      "title": "Fasting & Self-Control",
+      "description": "A shield that strengthens the will by denying the physical self.",
+      "icon": "Compass",
+      "content": "The Prophet (saw) advised young people who cannot marry to fast, as it is a shield. Fasting reduces the energy of the body and focuses it on the spirit. It proves to you that you ARE in control of your physical impulses, even basic ones like hunger and thrist.",
+      "action": "If you feel a strong streak of urges, consider a voluntary fast (Mondays/Thursdays) this week."
+    },
+    {
+      "id": 5,
+      "category": "Theology",
+      "title": "Mercy Over Shame",
+      "description": "Why guilt is useful, but shame is a tool of the enemy.",
+      "icon": "HeartPulse",
+      "content": "Guilt (Nafsal-Lawwama) helps you repent and improve. But shame—the feeling that you are 'trash' or 'too far gone'—is from Shaytan. He uses shame to make you give up entirely. Remember: 'Allah loves those who repent' (2:222). Repentance is a superpower, not a sign of weakness.",
+      "action": "When you slip, say: 'I have made a mistake, but Allah's mercy is bigger than my mistake.' Then start again."
+    },
+    {
+      "id": 6,
+      "category": "Shield",
+      "title": "Dhikr & Grounding",
+      "description": "Using sacred words to rewire the brain's focus during high stress.",
+      "icon": "Zap",
+      "content": "Repetitive Dhikr (remembrance) acts as a form of meditation and neural restructuring. When you say 'SubhanAllah' or 'Astaghfirullah', you are pulling your brain out of its 'pre-frontal' urge loop and back into its higher spiritual functioning. It's an immediate distraction that carries divine reward.",
+      "action": "When an urge hits, don't argue with it. Just repeat 'Ya Hayyu Ya Qayyum' for 60 seconds."
+    }
+  ],
+  "faq": [
+    {
+      "id": 1,
+      "category": "Mindset",
+      "question": "I've tried 100 times and failed. Is it even possible for my brain to change?",
+      "logic": "Yes. This is called 'Neuroplasticity.' Your brain is like a muscle; by consistently choosing a different path, you weaken old neural pathways and build new ones. It takes time, but biologically, your brain is designed to heal.",
+      "spiritual": "Allah says: 'And those who strive for Us - We will surely guide them to Our ways.' (29:69). The struggle itself is the worship. Even if you fail, the sincere 'striving' is rewriting your spiritual destiny.",
+      "fiqh": "Repentance (Tawbah) is always obligatory and always accepted as long as life continues. One must not lose hope, as despairing of Allah's mercy is a major sin."
+    },
+    {
+      "id": 2,
+      "category": "Purity",
+      "question": "Does an 'accident' or a slip-up break my fast or invalidate my prayer?",
+      "logic": "A slip-up is a lapse, not a collapse. Psychologically, 'all-or-nothing' thinking is a trap. If you fall, you don't burn the whole house down; you just clean the floor and move on.",
+      "spiritual": "Imam Sajjad (AS) teaches in the Sahifa Sajjadiya that Allah's door is never locked. A slip-up is an opportunity to return with more humility (Inabat).",
+      "fiqh": "If a slip (e.g., Istimna) happens intentionally during a fast, it invalidates the fast and requires Qadha and Kaffarah. However, if it's unintentional or during sleep (Ihtilam), the fast remains valid. Ghusl Janabat becomes obligatory for prayer."
+    },
+    {
+      "id": 3,
+      "category": "Theology",
+      "question": "I feel so dirty that I can't stand to pray. Isn't it hypocritical to pray after sinning?",
+      "logic": "This is a 'cognitive distortion' called labeling. Doing a bad thing doesn't make you a 'bad person.' Prayer is the medicine; you don't wait to be healthy before taking medicine.",
+      "spiritual": "The Prophet (SAW) said: 'The prayer is a river. If you wash in it five times a day, will any dirt remain?' No matter the sin, the Salah is your lifeline to purification.",
+      "fiqh": "Sin does not make a person 'Najis' (ritually impure) in a way that prevents them from entering a Mosque or praying, provided they perform the necessary Ghusl/Wudhu. It is haram to abandon Salah due to feelings of unworthiness."
+    }
+  ]
+}
