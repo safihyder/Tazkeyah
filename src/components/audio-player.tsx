@@ -18,7 +18,16 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-const PLAYLIST = [
+interface Track {
+  id: number;
+  title: string;
+  reciter: string;
+  url: string;
+  type: string;
+  fallback?: string;
+}
+
+const PLAYLIST: Track[] = [
 
   {
     id: 2,
