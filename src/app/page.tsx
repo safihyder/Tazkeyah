@@ -118,19 +118,17 @@ export default function Home() {
               exit={{ opacity: 0 }}
               className="absolute inset-0 z-10 flex flex-col overflow-y-auto overflow-x-hidden scrollbar-hide"
             >
-              <div className="w-full min-h-full max-w-7xl mx-auto flex flex-col items-center py-20 px-4">
+              <div className="w-full min-h-full max-w-7xl mx-auto flex flex-col items-center py-8 px-4">
                 <motion.div
                   initial={{ y: -20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   className="sticky top-0 z-50 mb-12 text-center"
+                ><Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleReset}
+                  className="rounded-full text-xs opacity-60 hover:opacity-100 hover:bg-primary/10 transition-all backdrop-blur-md bg-background/20"
                 >
-                  <h2 className="text-sm md:text-base font-bold font-heading italic text-primary/40 uppercase tracking-[0.5em] mb-4">The Sanctuary</h2>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleReset}
-                    className="rounded-full text-xs opacity-60 hover:opacity-100 hover:bg-primary/10 transition-all backdrop-blur-md bg-background/20"
-                  >
                     <ArrowLeft className="mr-2 h-3 w-3" /> Back to Introduction
                   </Button>
                 </motion.div>
