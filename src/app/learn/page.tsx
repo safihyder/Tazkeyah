@@ -6,6 +6,9 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/comp
 import * as Icons from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import wisdomData from "@/data/wisdom.json";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 // Icon Helper to map string to Lucide component
 const Icon = ({ name, className }: { name: string; className?: string }) => {
@@ -29,6 +32,14 @@ export default function LearnPage() {
         <div className="space-y-2">
           <h1 className="text-4xl font-bold font-heading text-primary tracking-tight">Wisdom Library</h1>
           <p className="text-muted-foreground italic max-w-2xl">"Acquire knowledge, for he who acquires it in the way of Allah performs an act of piety." — Imam Ali (AS)</p>
+          <div className="flex gap-4 mt-4">
+            <Link href="/learn/instructions" className={cn(buttonVariants({ variant: "outline", size: "sm" }), "rounded-full")}>
+              <Icons.BookOpen className="mr-2 h-4 w-4" /> 10 Instructions
+            </Link>
+            <Link href="/learn/adventures" className={cn(buttonVariants({ variant: "default", size: "sm" }), "rounded-full shadow-lg shadow-primary/20")}>
+              <Icons.Sword className="mr-2 h-4 w-4" /> Seven Adventures
+            </Link>
+          </div>
         </div>
         
         <div className="relative max-w-sm w-full">
