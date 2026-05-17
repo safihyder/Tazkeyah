@@ -21,7 +21,7 @@ const IconComponent = ({ name, className }: { name: keyof typeof Icons; classNam
   return <LucideIcon className={className} />;
 };
 
-export const OrbitalNavigation = ({ items }: { items: OrbitalItem[] }) => {
+export const OrbitalNavigation = ({ items, onNavigate }: { items: OrbitalItem[]; onNavigate?: () => void }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const [radius, setRadius] = useState(300);
@@ -76,7 +76,7 @@ export const OrbitalNavigation = ({ items }: { items: OrbitalItem[] }) => {
               exit={{ opacity: 0, scale: 1.5, filter: "blur(10px)" }}
               className="pointer-events-auto"
             >
-              <Link href={items[activeIndex].href} className="flex flex-col items-center justify-center text-center p-8 rounded-full bg-primary/10 backdrop-blur-3xl border border-primary/30 w-56 h-56 md:w-72 md:h-72 shadow-[0_0_80px_rgba(var(--primary),0.2)] group cursor-pointer">
+              <Link href={items[activeIndex].href} onClick={onNavigate} className="flex flex-col items-center justify-center text-center p-8 rounded-full bg-primary/10 backdrop-blur-3xl border border-primary/30 w-56 h-56 md:w-72 md:h-72 shadow-[0_0_80px_rgba(var(--primary),0.2)] group cursor-pointer">
                 <div className="mb-4 p-4 rounded-full bg-primary/20 shadow-[0_0_20px_rgba(var(--primary),0.2)] group-hover:bg-primary/30 transition-colors">
                   <IconComponent 
                     name={items[activeIndex].icon} 
@@ -133,6 +133,7 @@ export const OrbitalNavigation = ({ items }: { items: OrbitalItem[] }) => {
                   isActive={activeIndex === index}
                   onHover={() => setActiveIndex(index)}
                   onLeave={() => setActiveIndex(null)}
+                  onClick={onNavigate}
                 />
               </div>
             </div>
@@ -152,12 +153,14 @@ const OrbitalBubble = ({
   item,
   isActive,
   onHover,
-  onLeave
+  onLeave,
+  onClick
 }: {
   item: OrbitalItem;
   isActive: boolean;
   onHover: () => void;
   onLeave: () => void;
+  onClick?: () => void;
 }) => {
   return (
     <Link
@@ -169,6 +172,8 @@ const OrbitalBubble = ({
         if (window.innerWidth < 768 && !isActive) {
           e.preventDefault();
           onHover();
+        } else if (onClick) {
+          onClick();
         }
       }}
       className="block outline-none"

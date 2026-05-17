@@ -46,3 +46,40 @@ export function ShieldTracker() {
 
   return { strength, level };
 }
+
+export function useSanctuary() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleUpdate = (e: any) => setIsOpen(e.detail);
+    window.addEventListener("sanctuary-toggled", handleUpdate);
+    return () => window.removeEventListener("sanctuary-toggled", handleUpdate);
+  }, []);
+
+  const openSanctuary = () => {
+    window.dispatchEvent(new CustomEvent("sanctuary-toggled", { detail: true }));
+  };
+
+  const closeSanctuary = () => {
+    window.dispatchEvent(new CustomEvent("sanctuary-toggled", { detail: false }));
+  };
+
+  return { isOpen, openSanctuary, closeSanctuary };
+}
+
+export function useScrollState(threshold = 450) {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > threshold);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Check initial state
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [threshold]);
+
+  return { scrolled };
+}

@@ -2,35 +2,28 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Moon, Sun, Menu, X, Sparkles, Shield } from "lucide-react";
-import { useTheme } from "next-themes";
+import { Sparkles, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { ShieldTracker } from "@/lib/store";
-
-const navItems = [
-  { name: "Home", href: "/" },
-  { name: "Start Here", href: "/start" },
-  { name: "Daily", href: "/daily" },
-  { name: "Urge!", href: "/emergency" },
-  { name: "Tracker", href: "/tracker" },
-  { name: "Learn", href: "/learn" },
-  { name: "Progress", href: "/progress" },
-  { name: "Q&A", href: "/qa" },
-];
+import { ShieldTracker, useSanctuary, useScrollState } from "@/lib/store";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function Navbar() {
   const pathname = usePathname();
-  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const { scrolled } = useScrollState();
   const { strength, level } = ShieldTracker();
+  const { openSanctuary } = useSanctuary();
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   if (!mounted) return null;
+
+  // Show the sanctuary button in Navbar if we are NOT on the homepage, OR if we are on the homepage and have scrolled down.
+  const showSanctuaryButton = pathname !== "/" || scrolled;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b glass transition-all duration-300">
@@ -47,7 +40,7 @@ export function Navbar() {
           </Link>
 
           {/* Shield Status */}
-          <div className="hidden lg:flex items-center gap-3 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10">
+          <div className="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10">
             <div className="relative">
               <Shield className="h-5 w-5 text-primary" />
               <span className="absolute -top-1 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-accent text-[8px] font-bold text-accent-foreground">
@@ -61,61 +54,24 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "transition-colors hover:text-primary",
-                pathname === item.href ? "text-primary font-bold" : "text-muted-foreground"
-              )}
-            >
-              {item.name}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            aria-label="Toggle theme"
-          >
-            {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
-          </Button>
-
-          {/* Mobile Nav */}
-          <div className="md:hidden">
-            <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
-          </div>
+        <div className="flex items-center">
+          <AnimatePresence>
+            {showSanctuaryButton && (
+              <motion.button
+                layoutId="sanctuary-button"
+                onClick={openSanctuary}
+                className="relative flex items-center justify-center rounded-full h-10 w-10 md:h-12 md:w-12 bg-emerald-500 shadow-[0_0_20px_rgba(16,185,129,0.8)] transition-transform hover:scale-110 cursor-pointer"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 2.0, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <Sparkles className="h-4 w-4 md:h-5 md:w-5 text-white" />
+              </motion.button>
+            )}
+          </AnimatePresence>
         </div>
       </div>
-
-      {/* Mobile Drawer */}
-      {isOpen && (
-        <div className="md:hidden border-b bg-background animate-in slide-in-from-top duration-300">
-          <nav className="flex flex-col p-4 space-y-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setIsOpen(false)}
-                className={cn(
-                  "text-lg font-medium transition-colors hover:text-primary",
-                  pathname === item.href ? "text-primary font-bold" : "text-muted-foreground"
-                )}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </nav>
-        </div>
-      )}
     </header>
   );
 }
