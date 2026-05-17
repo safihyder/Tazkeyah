@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative w-full overflow-hidden flex flex-col items-center justify-center text-center px-4 min-h-[95vh] pt-5">
+      <section className="relative w-full overflow-hidden flex flex-col items-center justify-center text-center px-4 min-h-[calc(100vh-80px)] py-8">
         {/* Background Accents */}
         <div className="absolute top-0 -z-20 h-full w-full bg-background">
           <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20"></div>
