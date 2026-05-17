@@ -94,17 +94,19 @@ export const OrbitalNavigation = ({ items, onNavigate }: { items: OrbitalItem[];
           ) : (
             <motion.div
               key="default"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-center flex flex-col items-center"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              className="text-center flex flex-col items-center justify-center pointer-events-auto cursor-pointer group"
+              onClick={onNavigate}
             >
-              <div className="relative mb-6">
-                <div className="absolute inset-0 rounded-full border-2 border-primary/20 animate-ping" />
-                <div className="w-20 h-20 rounded-full border-2 border-primary/30 border-t-primary animate-spin opacity-40" />
+              <div className="relative mb-4 flex items-center justify-center h-20 w-20 rounded-full border border-primary/20 bg-background/50 backdrop-blur-md group-hover:bg-primary/10 transition-colors shadow-lg">
+                <div className="absolute inset-0 rounded-full border border-primary/30 animate-spin-slow opacity-40" style={{ animationDuration: '8s' }} />
+                <Icons.X className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors group-hover:scale-110" />
               </div>
-              <p className="text-sm uppercase tracking-[0.6em] italic text-primary/40 font-black">Sanctuary</p>
-
+              <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground group-hover:text-primary font-bold transition-colors">
+                Close
+              </p>
             </motion.div>
           )}
         </AnimatePresence>

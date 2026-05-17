@@ -77,23 +77,8 @@ export function SanctuaryOverlay() {
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[100] flex flex-col overflow-y-auto overflow-x-hidden scrollbar-hide bg-background/95 backdrop-blur-xl"
         >
-          <div className="w-full min-h-full max-w-7xl mx-auto flex flex-col items-center py-8 px-4 relative">
-            <motion.div
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              className="sticky top-4 z-50 mb-12 text-center"
-            >
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={closeSanctuary}
-                className="rounded-full text-xs opacity-60 hover:opacity-100 hover:bg-primary/10 transition-all backdrop-blur-md bg-background/20"
-              >
-                <ArrowLeft className="mr-2 h-3 w-3" /> Back
-              </Button>
-            </motion.div>
-
-            <div className="w-full flex-1 flex items-center justify-center overflow-visible mt-20">
+          <div className="w-full min-h-full max-w-7xl mx-auto flex flex-col items-center justify-center p-4 relative">
+            <div className="w-full flex-1 flex items-center justify-center overflow-visible">
               <OrbitalNavigation items={mainSections} onNavigate={closeSanctuary} />
             </div>
           </div>
