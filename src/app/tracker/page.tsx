@@ -9,37 +9,42 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShieldCheck, History, Heart, Calendar, Smile, Meh, Frown, LogOut, CheckCircle2, Award, Zap, Brain, MessageSquare } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useTrackerStore, MoodType } from "@/lib/store";
 
 export default function HabitTracker() {
-  const [streak, setStreak] = useState(0);
-  const [hasCheckedIn, setHasCheckedIn] = useState(false);
-  const [mood, setMood] = useState<string | null>(null);
+  const { state, hasCheckedInToday, todayEntry, checkIn, resetStreak, logMood, saveJournal, isLoaded } = useTrackerStore();
   const [showRelapse, setShowRelapse] = useState(false);
+  const [journalInput, setJournalInput] = useState("");
+  const [savedStatus, setSavedStatus] = useState(false);
+
+  const streak = state.streak;
+  const mood = todayEntry?.mood;
 
   useEffect(() => {
-    const savedStreak = localStorage.getItem("nt-streak");
-    if (savedStreak) setStreak(parseInt(savedStreak));
-  }, []);
+    if (todayEntry?.journal !== undefined) {
+      setJournalInput(todayEntry.journal);
+    }
+  }, [todayEntry?.journal]);
 
   const handleCheckIn = () => {
-    setHasCheckedIn(true);
-    setStreak((s) => {
-        const newStreak = s + (hasCheckedIn ? 0 : 1);
-        localStorage.setItem("nt-streak", newStreak.toString());
-        return newStreak;
-    });
+    checkIn();
+  };
+
+  const handleSaveJournal = () => {
+    saveJournal(journalInput);
+    setSavedStatus(true);
+    setTimeout(() => setSavedStatus(false), 2000);
   };
 
   const logRelapse = () => {
     const confirm = window.confirm("Relapse is part of recovery, not the end of it. Are you sure you want to reset your streak?");
     if (confirm) {
-        setStreak(0);
-        localStorage.setItem("nt-streak", "0");
-        setHasCheckedIn(false);
-        setMood(null);
+        resetStreak();
         setShowRelapse(false);
     }
   };
+
+  if (!isLoaded) return null;
 
   return (
     <div className="container max-w-6xl py-12 px-4">
@@ -72,10 +77,10 @@ export default function HabitTracker() {
                              <Progress value={(Math.min(streak, 30) / 30) * 100} className="h-3" />
                              <Button
                                 className="w-full rounded-2xl h-14 text-lg font-bold shadow-lg"
-                                disabled={hasCheckedIn}
+                                disabled={hasCheckedInToday}
                                 onClick={handleCheckIn}
                              >
-                                {hasCheckedIn ? (
+                                {hasCheckedInToday ? (
                                     <span className="flex items-center gap-2"><CheckCircle2 className="h-5 w-5" /> Already Checked-in</span>
                                 ) : (
                                     "Confirm My Purity Today"
@@ -103,7 +108,7 @@ export default function HabitTracker() {
                                ].map((m) => (
                                    <button
                                       key={m.key}
-                                      onClick={() => setMood(m.key)}
+                                      onClick={() => logMood(m.key as MoodType)}
                                       className={cn(
                                           "flex flex-col items-center gap-2 p-4 rounded-2xl transition-all border-2 border-transparent",
                                           mood === m.key ? "bg-primary/5 border-primary/20 scale-110" : "hover:bg-muted opacity-60 hover:opacity-100"
@@ -134,20 +139,57 @@ export default function HabitTracker() {
                                   A private space to analyze what leads you towards bad habits.
                                </div>
                                <textarea
+                                  value={journalInput}
+                                  onChange={(e) => setJournalInput(e.target.value)}
                                   placeholder="What triggered you today? (e.g., Boredom, Social Media, Late night usage...)"
                                   className="w-full min-h-[120px] rounded-2xl border-2 bg-background p-4 text-sm focus:border-primary outline-none transition-all resize-none"
                                />
-                               <Button variant="secondary" className="w-full rounded-xl">Save Private Reflection</Button>
+                               <Button 
+                                  variant={savedStatus ? "default" : "secondary"}
+                                  className={`w-full rounded-xl ${savedStatus ? 'bg-emerald-500 hover:bg-emerald-600 text-white' : ''}`}
+                                  onClick={handleSaveJournal}
+                               >
+                                  {savedStatus ? (
+                                     <span className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4" /> Saved!</span>
+                                  ) : (
+                                     "Save Private Reflection"
+                                  )}
+                               </Button>
                             </div>
                         </TabsContent>
 
-                        <TabsContent value="history" className="py-10 text-center">
-                             <div className="flex flex-col items-center gap-4">
-                                <div className="h-16 w-16 bg-muted rounded-full flex items-center justify-center opacity-40">
-                                   <Calendar className="h-8 w-8" />
+                        <TabsContent value="history" className="pt-6">
+                             {Object.keys(state.history).length === 0 ? (
+                                <div className="flex flex-col items-center gap-4 py-10 text-center">
+                                    <div className="h-16 w-16 bg-muted rounded-full flex items-center justify-center opacity-40">
+                                       <Calendar className="h-8 w-8" />
+                                    </div>
+                                    <p className="text-muted-foreground text-sm font-medium">No history recorded yet. Check in or log your mood.</p>
                                 </div>
-                                <p className="text-muted-foreground text-sm font-medium">History tracking will be available soon with local storage support.</p>
-                             </div>
+                             ) : (
+                                <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2">
+                                    {Object.values(state.history).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((entry, idx) => (
+                                        <div key={idx} className="p-4 rounded-2xl border bg-background/50 space-y-2 text-left">
+                                            <div className="flex items-center justify-between">
+                                                <span className="font-bold text-sm">{new Date(entry.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</span>
+                                                {entry.mood && (
+                                                    <span className="text-xs uppercase font-bold tracking-widest opacity-60 flex items-center gap-1">
+                                                        {entry.mood === 'calm' && <Smile className="h-3 w-3 text-emerald-500" />}
+                                                        {entry.mood === 'tested' && <Meh className="h-3 w-3 text-amber-500" />}
+                                                        {entry.mood === 'struggle' && <Frown className="h-3 w-3 text-rose-500" />}
+                                                        {entry.mood}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            {entry.journal && (
+                                                <div className="text-sm italic text-muted-foreground p-3 rounded-xl bg-muted/30 border border-primary/5">
+                                                    "{entry.journal}"
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                             )}
                         </TabsContent>
                     </Tabs>
                 </Card>

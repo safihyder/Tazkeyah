@@ -4,16 +4,16 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress as ShadcnProgress } from "@/components/ui/progress";
-import { BarChart3, LineChart, PieChart, ShieldCheck, Heart, Zap, Award, Target, Calendar, Activity, Info, Trophy, Smile, CheckCircle2 } from "lucide-react";
+import { BarChart3, LineChart, PieChart, ShieldCheck, Heart, Zap, Award, Target, Calendar, Activity, Info, Trophy, Smile, CheckCircle2, Meh, Frown, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTrackerStore } from "@/lib/store";
 
 export default function Progress() {
-  const [streak, setStreak] = useState(0);
+  const { state, isLoaded } = useTrackerStore();
+  
+  if (!isLoaded) return null;
 
-  useEffect(() => {
-    const savedStreak = localStorage.getItem("nt-streak");
-    if (savedStreak) setStreak(parseInt(savedStreak));
-  }, []);
+  const streak = state.streak;
 
   const milestones = [
     { label: "1 Day", days: 1, text: "The first victory." },
@@ -26,6 +26,13 @@ export default function Progress() {
   const currentMilestone = milestones.find((m) => m.days > streak) || milestones[milestones.length - 1];
   const previousMilestone = milestones[milestones.lastIndexOf(milestones.find((m) => m.days > streak)!) - 1] || { days: 0 };
   const percentage = Math.min(Math.round(((streak - previousMilestone.days) / (currentMilestone.days - previousMilestone.days)) * 100), 100);
+
+  // Generate last 14 days
+  const last14Days = Array.from({ length: 14 }).map((_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (13 - i));
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  });
 
   return (
     <div className="container max-w-6xl py-12 px-4 space-y-12">
@@ -116,16 +123,55 @@ export default function Progress() {
                 <Card className="rounded-[2.5rem] p-10 space-y-8 bg-muted/30 border-none">
                     <h3 className="text-2xl font-bold font-heading flex items-center gap-3">
                        <ShieldCheck className="h-6 w-6 text-primary" />
-                       History Visualization
+                       Recent Activity (Last 14 Days)
                     </h3>
-                    <div className="h-64 w-full bg-background/50 rounded-3xl border flex flex-col items-center justify-center gap-6 opacity-80 italic p-6 text-center">
-                        <LineChart className="h-16 w-16 opacity-10" />
-                        <p className="text-sm text-muted-foreground">
-                            As you use the platform daily, a map of your spiritual peaks and valleys will appear here to help you identify patterns. Stay consistent to build your data profile.
-                        </p>
-                        <Button variant="outline" size="sm" className="rounded-full px-8 text-[10px] font-bold uppercase tracking-widest">
-                           Enable Premium Cloud Sync (Soon)
-                        </Button>
+                    <div className="w-full bg-background/50 rounded-3xl border p-6 flex flex-col gap-6">
+                        <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
+                            {last14Days.map(dateStr => {
+                                const entry = state.history[dateStr];
+                                const mood = entry?.mood;
+                                const isToday = dateStr === last14Days[last14Days.length - 1];
+                                
+                                let bgColor = "bg-muted";
+                                if (mood === "calm") bgColor = "bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.3)]";
+                                else if (mood === "tested") bgColor = "bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.3)]";
+                                else if (mood === "struggle") bgColor = "bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.3)]";
+
+                                return (
+                                    <div key={dateStr} className="flex flex-col items-center gap-2 min-w-[3rem]">
+                                        <div 
+                                          className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${bgColor} ${isToday ? 'ring-2 ring-primary ring-offset-2 ring-offset-background' : ''}`}
+                                          title={`${dateStr}: ${mood || 'No record'}`}
+                                        >
+                                           {mood === 'calm' && <Smile className="h-5 w-5 text-white" />}
+                                           {mood === 'tested' && <Meh className="h-5 w-5 text-white" />}
+                                           {mood === 'struggle' && <Frown className="h-5 w-5 text-white" />}
+                                        </div>
+                                        <span className="text-[10px] uppercase font-bold opacity-50">
+                                            {new Date(dateStr).toLocaleDateString('en-US', { weekday: 'short' })}
+                                        </span>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        
+                        <div className="pt-4 border-t space-y-4">
+                            <h4 className="text-sm font-bold uppercase tracking-widest opacity-70">Recent Reflections</h4>
+                            <div className="space-y-3">
+                                {Object.values(state.history).filter(e => e.journal).slice(-3).reverse().map((entry, i) => (
+                                    <div key={i} className="p-4 rounded-2xl bg-muted/30 border border-primary/5 text-sm italic flex gap-4">
+                                        <div className="opacity-40 mt-0.5"><MessageSquare className="h-4 w-4" /></div>
+                                        <div>
+                                            <span className="font-bold opacity-50 mr-2 not-italic text-xs">{entry.date}</span>
+                                            <span className="text-muted-foreground">"{entry.journal}"</span>
+                                        </div>
+                                    </div>
+                                ))}
+                                {Object.values(state.history).filter(e => e.journal).length === 0 && (
+                                    <p className="text-sm text-muted-foreground italic opacity-60">No journal entries recorded yet. Use the Tracker to write private reflections.</p>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </Card>
             </div>
