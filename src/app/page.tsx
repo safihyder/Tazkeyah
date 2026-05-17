@@ -100,7 +100,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className={cn(
         "relative w-full overflow-hidden flex flex-col items-center justify-center text-center px-4 transition-all duration-700",
-        showBubbles ? "h-screen fixed inset-0 z-50 bg-background" : "min-h-[95vh] pt-10"
+        showBubbles ? "h-screen fixed inset-0 z-50 bg-background" : "min-h-[95vh] pt-5"
       )}>
         {/* Background Accents */}
         <div className="absolute top-0 -z-20 h-full w-full bg-background">
@@ -156,7 +156,7 @@ export default function Home() {
               <span className="tracking-widest uppercase">Spiritual Freedom & Purity</span>
             </motion.div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 font-heading text-primary leading-[1.1]">
+            <h1 className="text-4xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 font-heading text-primary leading-[1.1]">
               Break the chains. <br />
               <span className="text-foreground font-light italic">Find your peace.</span>
             </h1>

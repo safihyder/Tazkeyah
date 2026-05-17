@@ -74,20 +74,22 @@ export const OrbitalNavigation = ({ items }: { items: OrbitalItem[] }) => {
               initial={{ opacity: 0, scale: 0.5, filter: "blur(10px)" }}
               animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
               exit={{ opacity: 0, scale: 1.5, filter: "blur(10px)" }}
-              className="flex flex-col items-center justify-center text-center p-8 rounded-full bg-primary/10 backdrop-blur-3xl border border-primary/30 w-56 h-56 md:w-72 md:h-72 shadow-[0_0_80px_rgba(var(--primary),0.2)]"
+              className="pointer-events-auto"
             >
-              <div className="mb-4 p-4 rounded-full bg-primary/20 shadow-[0_0_20px_rgba(var(--primary),0.2)]">
-                <IconComponent
-                  name={items[activeIndex].icon}
-                  className="w-12 h-12 md:w-20 h-20 text-primary animate-pulse"
-                />
-              </div>
-              <h3 className="text-xl md:text-2xl font-bold font-heading text-primary uppercase tracking-widest leading-tight drop-shadow-sm">
-                {items[activeIndex].title}
-              </h3>
-              <p className="mt-4 text-[10px] md:text-xs uppercase tracking-[0.4em] text-primary/60 font-black animate-pulse">
-                Click to Enter
-              </p>
+              <Link href={items[activeIndex].href} className="flex flex-col items-center justify-center text-center p-8 rounded-full bg-primary/10 backdrop-blur-3xl border border-primary/30 w-56 h-56 md:w-72 md:h-72 shadow-[0_0_80px_rgba(var(--primary),0.2)] group cursor-pointer">
+                <div className="mb-4 p-4 rounded-full bg-primary/20 shadow-[0_0_20px_rgba(var(--primary),0.2)] group-hover:bg-primary/30 transition-colors">
+                  <IconComponent 
+                    name={items[activeIndex].icon} 
+                    className="w-12 h-12 md:w-20 md:h-20 text-primary animate-pulse group-hover:scale-110 transition-transform" 
+                  />
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold font-heading text-primary uppercase tracking-widest leading-tight drop-shadow-sm">
+                  {items[activeIndex].title}
+                </h3>
+                <p className="mt-4 text-[10px] md:text-xs uppercase tracking-[0.4em] text-primary/60 font-black animate-pulse">
+                  Tap to Enter
+                </p>
+              </Link>
             </motion.div>
           ) : (
             <motion.div
@@ -101,8 +103,7 @@ export const OrbitalNavigation = ({ items }: { items: OrbitalItem[] }) => {
                 <div className="absolute inset-0 rounded-full border-2 border-primary/20 animate-ping" />
                 <div className="w-20 h-20 rounded-full border-2 border-primary/30 border-t-primary animate-spin opacity-40" />
               </div>
-              {/* <p className="text-sm uppercase tracking-[0.6em] text-primary/40 font-black">Sanctuary</p> */}
-              <h2 className="text-sm md:text-base font-bold font-heading italic text-primary/40 uppercase tracking-[0.5em] mb-4">The Sanctuary</h2>
+              <p className="text-sm uppercase tracking-[0.6em] italic text-primary/40 font-black">Sanctuary</p>
 
             </motion.div>
           )}
@@ -163,6 +164,13 @@ const OrbitalBubble = ({
       href={item.href}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
+      onClick={(e) => {
+        // On mobile, first tap selects the item instead of navigating directly
+        if (window.innerWidth < 768 && !isActive) {
+          e.preventDefault();
+          onHover();
+        }
+      }}
       className="block outline-none"
     >
       <motion.div
@@ -171,7 +179,7 @@ const OrbitalBubble = ({
           rotate: isActive ? 0 : 0 // We'll keep rotation relative to parent
         }}
         className={cn(
-          "w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center transition-all duration-500 border relative group",
+          "w-16 h-16 md:w-20 md:h-20 rounded-full flex flex-col items-center justify-center transition-all duration-500 border relative group",
           isActive
             ? "bg-primary/20 border-primary shadow-[0_0_20px_rgba(var(--primary),0.3)] z-50"
             : "bg-background/40 backdrop-blur-md border-white/10 hover:border-primary/40"
@@ -179,18 +187,22 @@ const OrbitalBubble = ({
       >
         {/* Anti-rotation for icon so it stays upright */}
         <motion.div
-          className="relative z-10"
-        // This is a trick: we want to counteract the parent's rotation
-        // but since parent is rotated via GSAP, we might need a more complex way
-        // or just let them rotate (can look cool too)
+          className="relative z-10 flex flex-col items-center justify-center px-1"
         >
           <IconComponent
             name={item.icon}
             className={cn(
-              "w-6 h-6 md:w-8 md:h-8 transition-colors",
+              "w-5 h-5 md:w-8 md:h-8 transition-colors",
               isActive ? "text-primary" : "text-muted-foreground group-hover:text-primary"
             )}
           />
+          {/* Small label for mobile */}
+          <span className={cn(
+            "text-[6px] mt-1 text-center font-bold tracking-tighter uppercase leading-[1.1] md:hidden truncate w-[50px]",
+            isActive ? "text-primary" : "text-muted-foreground group-hover:text-primary"
+          )}>
+            {item.title}
+          </span>
         </motion.div>
 
         {/* Glow */}
